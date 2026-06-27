@@ -1,46 +1,61 @@
-const SHEET_ID = '1JaG7q7o2G0MWivZYhr9jUD20okufRsm_6ZvMDUg2KVA';
+const SPREADSHEET_ID = '1JaG7q7o2G0MWivZYhr9jUD20okufRsm_6ZvMDUg2KVA';
 
-// Hàm POST nhận dữ liệu từ Landing Page
 function doPost(e) {
   try {
-    const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
-    const sheet = spreadsheet.getSheets()[0]; // Tự động lấy sheet đầu tiên (không lo sai tên)
+    // 1. Mở file Google Sheet bằng ID
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     
-    // Lấy thời gian hiện tại
+    // 2. Lấy Sheet đầu tiên (không cần lo sai tên 'Trang tính 1' hay 'Sheet1' nữa)
+    const sheet = ss.getSheets()[0]; 
+    
+    // 3. Lấy dữ liệu gửi từ form. Trong trường hợp này nó nằm ở e.parameter
+    const p = e.parameter || {};
+
+    // 4. Tạo các trường tự động
     const timestamp = new Date();
     
-    let data = {};
-    
-    // Kiểm tra xem dữ liệu gửi lên là dạng JSON hay Form-urlencoded
-    if (e.postData && e.postData.type === "application/json") {
-      data = JSON.parse(e.postData.contents);
-    } else {
-      data = e.parameter; // Form-urlencoded (URLSearchParams)
+    let randomNumbers = '';
+    for (let i = 0; i < 10; i++) {
+      randomNumbers += Math.floor(Math.random() * 10).toString();
     }
+    const orderCode = 'AI' + randomNumbers;
+    const amount = '19.000đ';
 
-    // Lấy các trường dữ liệu
-    const name = data.name || '';
-    const email = data.email || '';
-    const phone = data.phone || '';
-    const channel = data.channel || '';
-    const timing = data.timing || '';
-    const note = data.note || '';
-    
-    // Thêm 1 dòng mới vào Google Sheet (Thứ tự cột tương ứng: Thời gian, Họ tên, Email, SĐT, Kênh, Thời gian tư vấn, Ghi chú)
-    sheet.appendRow([timestamp, name, email, phone, channel, timing, note]);
-    
-    // Trả kết quả JSON cho Client (CORS)
-    return ContentService.createTextOutput(JSON.stringify({ 'result': 'success' }))
-      .setMimeType(ContentService.MimeType.JSON);
+    // 5. Chuẩn bị dòng dữ liệu cần chèn
+    const rowData = [
+      timestamp,                      // Cột A: Thời gian
+      p.name || '',                   // Cột B: Họ và tên
+      p.email || '',                  // Cột C: Email
+      p.phone || '',                  // Cột D: Số điện thoại
+      p.channel || '',                // Cột E: Kênh tư vấn
+      p.timing || '',                 // Cột F: Thời gian thuận tiện
+      p.note || '',                   // Cột G: Ghi chú
+      orderCode,                      // Cột H: Mã đơn hàng
+      amount                          // Cột I: Số tiền
+    ];
+
+    // 6. Ghi dữ liệu vào Sheet
+    sheet.appendRow(rowData);
+
+    // Trả về JSON thành công
+    return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
+                         .setMimeType(ContentService.MimeType.JSON);
+
   } catch (error) {
-    // Xử lý lỗi nếu xảy ra
-    return ContentService.createTextOutput(JSON.stringify({ 'result': 'error', 'error': error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    // NẾU CÓ LỖI: Ghi thẳng chi tiết lỗi vào Sheet để dễ tìm nguyên nhân
+    try {
+      const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+      const sheet = ss.getSheets()[0];
+      sheet.appendRow([new Date(), "LỖI HỆ THỐNG", error.toString(), JSON.stringify(e || {})]);
+    } catch (err) {} // Bỏ qua nếu lỗi cả phần ghi lỗi
+    
+    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "message": error.toString() }))
+                         .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
-// Cấu hình OPTIONS để vượt qua kiểm tra CORS nếu client gọi fetch mode 'cors'
+// Bắt buộc phải có để tránh lỗi CORS trong một số trường hợp
 function doOptions(e) {
-  return ContentService.createTextOutput("")
-    .setMimeType(ContentService.MimeType.TEXT);
+  return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
+                       .setMimeType(ContentService.MimeType.JSON);
 }
