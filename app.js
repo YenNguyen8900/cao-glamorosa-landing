@@ -50,6 +50,11 @@ if (form) {
     submitBtn.disabled = true;
 
     try {
+      // Tạo mã đơn hàng trên frontend để đồng bộ giữa Sheet và QR Code
+      let randomNumbers = '';
+      for (let i = 0; i < 10; i++) randomNumbers += Math.floor(Math.random() * 10).toString();
+      const orderCode = 'AI' + randomNumbers;
+
       if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL') {
         // Tạo form data để gửi đi (Google Apps Script POST thường dễ nhận dạng URLSearchParams hơn JSON nếu k set up header phức tạp)
         const formData = new URLSearchParams();
@@ -59,6 +64,7 @@ if (form) {
         formData.append('channel', channel);
         formData.append('timing', timing);
         formData.append('note', note);
+        formData.append('orderCode', orderCode);
 
         await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
@@ -75,9 +81,16 @@ if (form) {
       form.style.display = 'none';
       formSuccess.classList.remove('hidden');
 
-      // Logic QR Code popup
+      // Logic QR Code popup & Order Code
       const qrLoading = document.getElementById('qr-loading');
       const qrConfirmBtn = document.getElementById('qr-confirm-btn');
+      const qrImage = document.getElementById('qr-image');
+      
+      if (qrImage) {
+        // Gắn số tiền và mã đơn hàng (Nội dung chuyển khoản) vào mã QR
+        const qrUrl = `https://vietqr.app/img?bank=BIDV&acc=962476666688888&amount=19000&addInfo=${orderCode}&template=compact&showinfo=true&holder=NGUYEN%20PHUOC%20VINH%20HUNG`;
+        qrImage.src = qrUrl;
+      }
       
       // Chờ 30 giây (30000ms) để hiển thị nút
       setTimeout(() => {
