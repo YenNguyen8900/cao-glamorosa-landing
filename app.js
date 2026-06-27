@@ -26,7 +26,7 @@ window.addEventListener('scroll', () => {
 const form = document.getElementById('consultation-form');
 const formSuccess = document.getElementById('form-success');
 // TODO: Thay thế bằng URL Web App của Google Apps Script sau khi bạn Deploy
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDE5FEBrHvhTmX69K9MRhcQr_Q56GeojQNFmbpktUpmMDloPQyjbFwJ4NMAB7oPMvz/exec'; 
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbza6na3eXyMZXeC0ZwklnhW_fHXVksJBA8J5G2bHXXH2A9VrUE7eDin4NInIgepogTF/exec';
 
 if (form) {
   form.addEventListener('submit', async (e) => {
@@ -37,7 +37,7 @@ if (form) {
     const channel = document.getElementById('channel').value;
     const timing = document.getElementById('timing').value;
     const note = document.getElementById('note').value.trim();
-    
+
     if (!name || !phone || !email) {
       alert('Vui lòng nhập họ tên, số điện thoại và email.');
       return;
@@ -66,12 +66,12 @@ if (form) {
           body: formData,
         });
       }
-      
+
       // Push GTM event
       if (window.dataLayer) {
         window.dataLayer.push({ event: 'form_submit', channel: channel, timing: timing });
       }
-      
+
       form.style.display = 'none';
       formSuccess.classList.remove('hidden');
     } catch (error) {
