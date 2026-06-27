@@ -217,11 +217,17 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 300; line-height: 1.
 .consult-form textarea { resize: vertical; min-height: 80px; }
 .consult-form .btn-primary { margin-top: 8px; letter-spacing: 0.1em; }
 .form-note { font-size: 0.72rem; color: var(--charcoal-soft); margin-top: 14px; text-align: center; opacity: 0.7; }
-.form-success { text-align: center; padding: 48px 24px; }
+.form-success { text-align: center; padding: 40px 24px; }
 .form-success.hidden { display: none; }
-.success-icon { font-size: 2rem; color: var(--gold-dark); margin-bottom: 16px; }
-.form-success h3 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 12px; color: var(--charcoal); }
-.form-success p { color: var(--charcoal-soft); }
+.success-icon { font-size: 2rem; color: var(--gold-dark); margin-bottom: 12px; }
+.form-success h3 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 8px; color: var(--charcoal); }
+.form-success p { color: var(--charcoal-soft); margin-bottom: 24px; }
+.qr-box { max-width: 260px; margin: 0 auto 20px; border: 1px solid rgba(213,185,138,0.4); padding: 16px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+.qr-box img { border-radius: 4px; }
+.qr-instruction { font-size: 0.95rem; margin-bottom: 16px; font-weight: 500; }
+#qr-loading { font-size: 0.88rem; color: var(--gold-dark); margin-bottom: 24px; font-weight: 500; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+#qr-confirm-btn.hidden { display: none; }
 
 /* ===== FAQ ===== */
 .faq-section { padding: 120px 0; background: var(--off-white); }
