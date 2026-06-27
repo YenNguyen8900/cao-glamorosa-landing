@@ -74,6 +74,17 @@ if (form) {
 
       form.style.display = 'none';
       formSuccess.classList.remove('hidden');
+
+      // Logic QR Code popup
+      const qrLoading = document.getElementById('qr-loading');
+      const qrConfirmBtn = document.getElementById('qr-confirm-btn');
+      
+      // Chờ 30 giây (30000ms) để hiển thị nút
+      setTimeout(() => {
+        if (qrLoading) qrLoading.style.display = 'none';
+        if (qrConfirmBtn) qrConfirmBtn.classList.remove('hidden');
+      }, 30000);
+      
     } catch (error) {
       console.error('Lỗi khi gửi form:', error);
       alert('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
