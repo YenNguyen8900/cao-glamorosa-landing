@@ -88,7 +88,7 @@ if (form) {
       
       if (qrImage) {
         // Gắn số tiền và mã đơn hàng (Nội dung chuyển khoản) vào mã QR
-        const qrUrl = `https://vietqr.app/img?bank=BIDV&acc=962476666688888&amount=19000&addInfo=${orderCode}&template=compact&showinfo=true&holder=NGUYEN%20PHUOC%20VINH%20HUNG`;
+        const qrUrl = `https://img.vietqr.io/image/BIDV-962476666688888-compact2.png?amount=19000&addInfo=${orderCode}&accountName=NGUYEN%20PHUOC%20VINH%20HUNG`;
         qrImage.src = qrUrl;
       }
       
