@@ -14,11 +14,14 @@ function doPost(e) {
     // 4. Tạo các trường tự động
     const timestamp = new Date();
     
-    let randomNumbers = '';
-    for (let i = 0; i < 10; i++) {
-      randomNumbers += Math.floor(Math.random() * 10).toString();
+    let orderCode = p.orderCode;
+    if (!orderCode) {
+      let randomNumbers = '';
+      for (let i = 0; i < 10; i++) {
+        randomNumbers += Math.floor(Math.random() * 10).toString();
+      }
+      orderCode = 'AI' + randomNumbers;
     }
-    const orderCode = 'AI' + randomNumbers;
     const amount = '19.000đ';
 
     // 5. Chuẩn bị dòng dữ liệu cần chèn
