@@ -26,7 +26,7 @@ window.addEventListener('scroll', () => {
 const form = document.getElementById('consultation-form');
 const formSuccess = document.getElementById('form-success');
 // TODO: Thay thế bằng URL Web App của Google Apps Script sau khi bạn Deploy
-const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL'; 
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDE5FEBrHvhTmX69K9MRhcQr_Q56GeojQNFmbpktUpmMDloPQyjbFwJ4NMAB7oPMvz/exec'; 
 
 if (form) {
   form.addEventListener('submit', async (e) => {
