@@ -1,5 +1,5 @@
 const SHEET_ID = '1JaG7q7o2G0MWivZYhr9jUD20okufRsm_6ZvMDUg2KVA';
-const SHEET_NAME = 'Trang tính 1'; // Thay đổi nếu tên sheet của bạn khác (ví dụ: 'Sheet1')
+const SHEET_NAME = 'WEB'; // Tên sheet chứa dữ liệu
 
 // Hàm POST nhận dữ liệu từ Landing Page
 function doPost(e) {
