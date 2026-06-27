@@ -9,18 +9,27 @@ function doPost(e) {
     // Lấy thời gian hiện tại
     const timestamp = new Date();
     
-    // Đọc dữ liệu từ form trên landing page (vì ta gửi bằng URLSearchParams nên data nằm trong e.parameter)
-    const name = e.parameter.name || '';
-    const email = e.parameter.email || '';
-    const phone = e.parameter.phone || '';
-    const channel = e.parameter.channel || '';
-    const timing = e.parameter.timing || '';
-    const note = e.parameter.note || '';
+    let data = {};
+    
+    // Kiểm tra xem dữ liệu gửi lên là dạng JSON hay Form-urlencoded
+    if (e.postData && e.postData.type === "application/json") {
+      data = JSON.parse(e.postData.contents);
+    } else {
+      data = e.parameter; // Form-urlencoded (URLSearchParams)
+    }
+
+    // Lấy các trường dữ liệu
+    const name = data.name || '';
+    const email = data.email || '';
+    const phone = data.phone || '';
+    const channel = data.channel || '';
+    const timing = data.timing || '';
+    const note = data.note || '';
     
     // Thêm 1 dòng mới vào Google Sheet (Thứ tự cột tương ứng: Thời gian, Họ tên, Email, SĐT, Kênh, Thời gian tư vấn, Ghi chú)
     sheet.appendRow([timestamp, name, email, phone, channel, timing, note]);
     
-    // Trả kết quả JSON cho Client (để Landing page biết là đã lưu thành công)
+    // Trả kết quả JSON cho Client (CORS)
     return ContentService.createTextOutput(JSON.stringify({ 'result': 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
@@ -28,4 +37,10 @@ function doPost(e) {
     return ContentService.createTextOutput(JSON.stringify({ 'result': 'error', 'error': error.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// Cấu hình OPTIONS để vượt qua kiểm tra CORS nếu client gọi fetch mode 'cors'
+function doOptions(e) {
+  return ContentService.createTextOutput("")
+    .setMimeType(ContentService.MimeType.TEXT);
 }
