@@ -1,10 +1,10 @@
 const SHEET_ID = '1JaG7q7o2G0MWivZYhr9jUD20okufRsm_6ZvMDUg2KVA';
-const SHEET_NAME = 'WEB'; // Tên sheet chứa dữ liệu
 
 // Hàm POST nhận dữ liệu từ Landing Page
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
+    const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
+    const sheet = spreadsheet.getSheets()[0]; // Tự động lấy sheet đầu tiên (không lo sai tên)
     
     // Lấy thời gian hiện tại
     const timestamp = new Date();
